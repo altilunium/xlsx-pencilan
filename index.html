@@ -1,6 +1,6 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<script src="jszip.js"></script>
+<script src="xlsx.js"></script>
 
 
 <form enctype="multipart/form-data">
@@ -15,6 +15,7 @@
 
 	var excelData
 	var selectBox = document.getElementById('kolom')
+	var writeboard = document.getElementById("xlx_json")
 
     var ExcelToJSON = function() {
 
@@ -42,7 +43,9 @@
 
             var json_object = JSON.stringify(XL_row_object);
             //console.log(JSON.parse(json_object));
-            jQuery( '#xlx_json' ).val( json_object );
+            //jQuery( '#xlx_json' ).val( json_object );
+            writeboard.value = json_object
+
           })
         };
 
@@ -62,7 +65,7 @@
   }
 
   var minmax = document.getElementById("minmax")
-  var writeboard = document.getElementById("xlx_json")
+  
 
 
   document.onkeypress = function (e){
@@ -78,7 +81,7 @@
   		console.log(min)
   		
   		for(var i=0, l=excelData.length ; i <l; i++){
-  			if (excelData[i][selectBox.value] < min || excelData[i][selectBox.value] > max){
+  			if ( (excelData[i][selectBox.value] < min) || (excelData[i][selectBox.value] > max) ) {
   				writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n" 
 
   				console.log( excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value])
