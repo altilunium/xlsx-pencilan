@@ -5,6 +5,7 @@
 
 <form enctype="multipart/form-data">
     <input id="upload" type=file  name="files[]">
+    <button id="reset_button">reset</button>
     <select id="kolom"></select>
     <input id="minmax"></input>
 </form>
@@ -16,7 +17,7 @@
 	var excelData
 	var selectBox = document.getElementById('kolom')
 	var writeboard = document.getElementById("xlx_json")
-
+	var json_object
     var ExcelToJSON = function() {
 
       this.parseExcel = function(file) {
@@ -41,7 +42,7 @@
 			}            
 
 
-            var json_object = JSON.stringify(XL_row_object);
+            json_object = JSON.stringify(XL_row_object);
             //console.log(JSON.parse(json_object));
             //jQuery( '#xlx_json' ).val( json_object );
             writeboard.value = json_object
@@ -67,6 +68,14 @@
   var minmax = document.getElementById("minmax")
   
 
+  var resetbutton = document.getElementById("reset_button")
+
+  resetbutton.onclick = function (e){
+  	e.preventDefault()
+  	console.log("yo!")
+  	writeboard.value = json_object
+  }
+
 
   document.onkeypress = function (e){
   	if (e.keyCode == 13){
@@ -81,7 +90,7 @@
   		console.log(min)
   		
   		for(var i=0, l=excelData.length ; i <l; i++){
-  			if ( (excelData[i][selectBox.value] < min) || (excelData[i][selectBox.value] > max) ) {
+  			if ( ( parseFloat(excelData[i][selectBox.value]) < parseFloat(min)) || ( parseFloat(excelData[i][selectBox.value]) > parseFloat(max)) ) {
   				writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n" 
 
   				console.log( excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value])
