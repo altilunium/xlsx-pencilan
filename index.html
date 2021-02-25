@@ -15,7 +15,7 @@
 
 <form enctype="multipart/form-data">
     <input id="upload" type=file  name="files[]">
-    <button id="reset_button">reset</button>
+    <button id="reset_button">out</button>
     <select id="kolom"></select>
     <input id="minmax"></input>
 </form>
@@ -82,20 +82,34 @@
   
 
   var resetbutton = document.getElementById("reset_button")
+  var isOut = true
+
 
   resetbutton.onclick = function (e){
   	e.preventDefault()
   	console.log("yo!")
+  	if(isOut) {
+  		resetbutton.innerHTML = "in"
+  		isOut = false
+  	}
+  	else{
+  		resetbutton.innerHTML = "out"
+  		isOut = true
+  	}
+  	reCalculate()
+
+  	/*
   	writeboard.value = ""
   	for(var i=0, l=XL_row_object.length ; i<l; i++){
 		writeboard.value += JSON.stringify(XL_row_object[i]) + "\n"
 	}
+	*/
+
   }
 
 
-  document.onkeypress = function (e){
-  	if (e.keyCode == 13){
-  		e.preventDefault()
+function reCalculate(){
+
   		writeboard.value = ""
   		var input_string = minmax.value
   		input_string = input_string.split(" ")
@@ -104,16 +118,31 @@
   		console.log(selectBox.value)
   		console.log(max)
   		console.log(min)
-  		
   		for(var i=0, l=excelData.length ; i <l; i++){
+
   			if ( ( parseFloat(excelData[i][selectBox.value]) < parseFloat(min)) || ( parseFloat(excelData[i][selectBox.value]) > parseFloat(max)) ) {
-  				writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n" 
-
-  				console.log( excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value])
+  				if (isOut){
+  					writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n" 
+  				}	
+  				//console.log( excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value])
   			}
-
-
+  			else {
+  				if (!isOut){
+  					writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n"
+  				}
+  			}
   		}
+
+}
+
+
+  document.onkeypress = function (e){
+  	if (e.keyCode == 13){
+  		e.preventDefault()
+
+  		reCalculate()
+
+
   	}
   }
 
