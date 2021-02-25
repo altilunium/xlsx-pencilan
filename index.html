@@ -27,7 +27,7 @@
 	var excelData
 	var selectBox = document.getElementById('kolom')
 	var writeboard = document.getElementById("xlx_json")
-	var json_object
+	var XL_row_object
     var ExcelToJSON = function() {
 
       this.parseExcel = function(file) {
@@ -40,7 +40,7 @@
           });
           workbook.SheetNames.forEach(function(sheetName) {
             // Here is your object
-            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+            XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
             excelData = XL_row_object
             console.log(XL_row_object[1])
             var columns = Object.keys(XL_row_object[1])
@@ -86,7 +86,10 @@
   resetbutton.onclick = function (e){
   	e.preventDefault()
   	console.log("yo!")
-  	writeboard.value = json_object
+  	writeboard.value = ""
+  	for(var i=0, l=XL_row_object.length ; i<l; i++){
+		writeboard.value += JSON.stringify(XL_row_object[i]) + "\n"
+	}
   }
 
 
