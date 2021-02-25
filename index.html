@@ -2,6 +2,16 @@
 <script src="jszip.js"></script>
 <script src="xlsx.js"></script>
 
+<style>
+#xlx_json{
+	width: 100%;
+	height: 100%;
+	border: none;
+}	
+
+
+</style>
+
 
 <form enctype="multipart/form-data">
     <input id="upload" type=file  name="files[]">
@@ -10,7 +20,7 @@
     <input id="minmax"></input>
 </form>
 
-    <textarea class="form-control" rows=35 cols=120 id="xlx_json"></textarea>
+    <textarea  class="form-control" rows=35 cols=120 id="xlx_json"></textarea>
 
 <script>
 
@@ -41,11 +51,14 @@
 				selectBox.options.add(new Option(opt,opt,true))
 			}            
 
+			for(var i=0, l=XL_row_object.length ; i<l; i++){
+				writeboard.value += JSON.stringify(XL_row_object[i]) + "\n"
+			}
 
-            json_object = JSON.stringify(XL_row_object);
+            //json_object = JSON.stringify(XL_row_object);
             //console.log(JSON.parse(json_object));
             //jQuery( '#xlx_json' ).val( json_object );
-            writeboard.value = json_object
+            //writeboard.value = json_object
 
           })
         };
