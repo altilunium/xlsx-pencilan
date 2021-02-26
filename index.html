@@ -8,20 +8,16 @@
 	height: 100%;
 	border: none;
 }	
-
-
 </style>
 
-
 <form enctype="multipart/form-data">
-    <input id="upload" type=file  name="files[]">
-    <button id="reset_button">out</button>
-    <select id="kolom"></select>
-    <input id="minmax"></input>
+<input id="upload" type=file  name="files[]">
+<button id="reset_button">out</button>
+<select id="kolom"></select>
+<input id="minmax"></input>
+<p id="info"></p>
 </form>
-
     <textarea  class="form-control" rows=35 cols=120 id="xlx_json"></textarea>
-
 <script>
 
 	var excelData
@@ -118,20 +114,30 @@ function reCalculate(){
   		console.log(selectBox.value)
   		console.log(max)
   		console.log(min)
+  		var badDataCount = 0
   		for(var i=0, l=excelData.length ; i <l; i++){
 
-  			if ( ( parseFloat(excelData[i][selectBox.value]) < parseFloat(min)) || ( parseFloat(excelData[i][selectBox.value]) > parseFloat(max)) ) {
+  			var inspectedCell = parseFloat(excelData[i][selectBox.value])
+  			if (inspectedCell == parseFloat(-9999) || isNaN(inspectedCell)) {
+  				badDataCount += 1
+  			}
+  			else{
+  				if ( (parseFloat(excelData[i][selectBox.value]) < parseFloat(min)) || ( parseFloat(excelData[i][selectBox.value]) > parseFloat(max)) ) {
   				if (isOut){
   					writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n" 
   				}	
-  				//console.log( excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value])
   			}
   			else {
   				if (!isOut){
   					writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n"
   				}
   			}
+
+  			}	
   		}
+  		var info_p = document.getElementById("info")
+  		var validPercentage = ((excelData.length - badDataCount)/excelData.length)*100
+  		info_p.innerHTML = "Total Data : " + excelData.length + " (" + validPercentage.toFixed(2) +"% valid)"
 
 }
 
