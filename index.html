@@ -13,7 +13,7 @@
 <form enctype="multipart/form-data">
 <input id="upload" type=file  name="files[]">
 <button id="reset_button">out</button>
-<select id="kolom"></select>
+<select id="kolom" onchange="reCalculate()"></select>
 <input id="minmax"></input>
 <p id="info"></p>
 </form>
@@ -106,8 +106,10 @@
 
 function reCalculate(){
 
-  		writeboard.value = ""
+  		
   		var input_string = minmax.value
+  		if (input_string == "") return
+  		writeboard.value = ""
   		input_string = input_string.split(" ")
   		min = input_string[0]
   		max = input_string[1]
@@ -115,6 +117,7 @@ function reCalculate(){
   		console.log(max)
   		console.log(min)
   		var badDataCount = 0
+  		var slicedCount =  0
   		for(var i=0, l=excelData.length ; i <l; i++){
 
   			var inspectedCell = parseFloat(excelData[i][selectBox.value])
@@ -124,20 +127,23 @@ function reCalculate(){
   			else{
   				if ( (parseFloat(excelData[i][selectBox.value]) < parseFloat(min)) || ( parseFloat(excelData[i][selectBox.value]) > parseFloat(max)) ) {
   				if (isOut){
-  					writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n" 
+  					writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n"
+  					slicedCount += 1 
   				}	
   			}
   			else {
   				if (!isOut){
   					writeboard.value += excelData[i][Object.keys(excelData[i])[0]] +"  "+excelData[i][selectBox.value] +"\n"
+  					slicedCount += 1
   				}
   			}
 
   			}	
   		}
   		var info_p = document.getElementById("info")
-  		var validPercentage = ((excelData.length - badDataCount)/excelData.length)*100
-  		info_p.innerHTML = "Total Data : " + excelData.length + " (" + validPercentage.toFixed(2) +"% valid)"
+  		var goodDataCount = excelData.length -badDataCount
+  		var slicedPercentage = (slicedCount/goodDataCount)*100
+  		info_p.innerHTML = "Total Data Valid : " + goodDataCount + " (" + slicedPercentage.toFixed(2) +"% captured)" + "<br>" + "Total Data Dropped : " + badDataCount
 
 }
 
