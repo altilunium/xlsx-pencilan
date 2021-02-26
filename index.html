@@ -23,6 +23,7 @@
 	var excelData
 	var selectBox = document.getElementById('kolom')
 	var writeboard = document.getElementById("xlx_json")
+	var info_p = document.getElementById("info")
 	var XL_row_object
     var ExcelToJSON = function() {
 
@@ -47,9 +48,13 @@
 				selectBox.options.add(new Option(opt,opt,true))
 			}            
 
+
+			info_p.innerHTML = XL_row_object.length + " data has been loaded" 
+			
+			/*
 			for(var i=0, l=XL_row_object.length ; i<l; i++){
 				writeboard.value += JSON.stringify(XL_row_object[i]) + "\n"
-			}
+			}*/
 
             //json_object = JSON.stringify(XL_row_object);
             //console.log(JSON.parse(json_object));
@@ -140,7 +145,7 @@ function reCalculate(){
 
   			}	
   		}
-  		var info_p = document.getElementById("info")
+  		
   		var goodDataCount = excelData.length -badDataCount
   		var slicedPercentage = (slicedCount/goodDataCount)*100
   		info_p.innerHTML = "Total Data Valid : " + goodDataCount + " (" + slicedPercentage.toFixed(2) +"% captured)" + "<br>" + "Total Data Dropped : " + badDataCount
